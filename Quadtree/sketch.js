@@ -139,8 +139,6 @@ class QuadTree {
     query(range, found = []) {
         if (!range.intersect(this.boundary)) return;
         else {
-            // 若改为此行，将会下降15帧！
-            // if (!this.boundary.intersect(range)) return;
             for (let p of this.points) {
                 if (range.contain(p)) found.push(p);
             }
