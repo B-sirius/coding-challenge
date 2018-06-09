@@ -1,8 +1,8 @@
 'use strict';
 
-const ROWS = 400;
-const COLS = 400;
-let dampening = 0.999;
+const ROWS = 200;
+const COLS = 200;
+let dampening = 0.99;
 
 let previous;
 let current;
@@ -11,18 +11,19 @@ function getWaterArray(rgb) {
     return Array.from({ length: ROWS }).map(i => Array.from({ length: COLS }).fill(rgb));
 }
 
+function mousePressed() {
+    previous[mouseX][mouseY] = 3000;
+}
+
 function setup() {
     createCanvas(200, 200);
+    pixelDensity(1);
     previous = getWaterArray(0);
     current = getWaterArray(0);
 }
 
-function mousePressed() {
-    previous[mouseX * 2][mouseY * 2] = 255;
-}
-
 function draw() {
-    background(255);
+    background(0);
 
     loadPixels();
     // 循环非边缘的对象
