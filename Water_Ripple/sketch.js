@@ -2,11 +2,10 @@
 
 const ROWS = 400;
 const COLS = 400;
-let dampening = 1 - 1 / 32;
+const dampening = 1 - 1 / 32;
 
 let previous;
 let current;
-let CrispKnee;
 let imagePixelsCopy;
 
 function getWaterArray(rgb) {
@@ -14,11 +13,17 @@ function getWaterArray(rgb) {
 }
 
 function mouseDragged() {
-    previous[mouseX][mouseY] = 500;
+    previous[int(mouseX)][int(mouseY)] = 512;
 }
 
-function preload() {
-    CrispKnee = loadImage('./witcher3.jpg');
+// 绘制图像
+function drawImage() {
+    background(255, 63, 213);
+    fill(65, 241, 242);
+    noStroke();
+    for (let i = 0; i < 8; i++) {
+        rect(i * 60, 0, 30, 600);
+    }
 }
 
 function setup() {
@@ -27,12 +32,15 @@ function setup() {
     previous = getWaterArray(0);
     current = getWaterArray(0);
 
-    CrispKnee.loadPixels();
-    imagePixelsCopy = Array.from(CrispKnee.pixels);
+    drawImage();
+
+    loadPixels();
+    imagePixelsCopy = Array.from(pixels);
 }
 
 function draw() {
-    CrispKnee.loadPixels();
+    drawImage();
+    loadPixels();
     // 循环非边缘的对象
     for (let i = 1; i < COLS - 1; i++) {
         for (let j = 1; j < ROWS - 1; j++) {
@@ -44,6 +52,11 @@ function draw() {
             ) / 2 - current[i][j];
 
             current[i][j] *= dampening;
+
+            // 调整波纹的结束
+            if (current[i][j] !== 0 && Math.abs(current[i][j]) < 0.1) {
+                current[i][j] = 0;
+            }
 
             const data = 1024 - current[i][j];
 
@@ -61,16 +74,14 @@ function draw() {
             const index = (i + j * COLS) * 4;
             const newIndex = (xoffset + yoffset * COLS) * 4;
 
-            CrispKnee.pixels[index] = imagePixelsCopy[newIndex];
-            CrispKnee.pixels[index + 1] = imagePixelsCopy[newIndex + 1];
-            CrispKnee.pixels[index + 2] = imagePixelsCopy[newIndex + 2];
+            pixels[index] = imagePixelsCopy[newIndex];
+            pixels[index + 1] = imagePixelsCopy[newIndex + 1];
+            pixels[index + 2] = imagePixelsCopy[newIndex + 2];
         }
     }
-    CrispKnee.updatePixels();
+    updatePixels();
 
     let temp = previous;
     previous = current;
     current = temp;
-
-    image(CrispKnee, 0, 0);
 }
