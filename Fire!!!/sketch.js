@@ -1,7 +1,7 @@
 'ues strict';
 
-const W = 200;
-const H = 200;
+const W = 150;
+const H = 100;
 
 let buffer1;
 let cooling;

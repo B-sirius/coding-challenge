@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+</body>
+<script>
+  function matrixMul(matA, matB) {
+    const rowA = matA.length;
+    const colA = matA[0].length;
+
+    const rowB = matB.length;
+    const colB = matB[0].length;
+
+    if (colA !== rowB) {
+      console.error('cols dont match rows!');
+      return;
+    }
+
+    const resultMat = [];
+    resultMat.length = rowA;
+    for (let i = 0; i < rowA; i++) {
+      resultMat[i] = [];
+      for (let j = 0; j < colB; j++) {
+        let sum = 0;
+        for (let k = 0; k < colA; k++) {
+          sum += matA[i][k] * matB[k][j];
+        }
+        resultMat[i][j] = sum;
+      }
+    }
+
+    return resultMat;
+  }
+
+  function printMatrix (mat) {
+    const row = mat.length;
+    const col = mat[0].length;
+
+    for (let i = 0; i < row; i++) {
+      let rowStr = '';
+      for (let j = 0; j < col; j++) {
+        rowStr += mat[i][j] + ' ';
+      }
+      console.log(`${rowStr}\n`);
+    }
+    console.log('------------');
+  }
+
+  function print() {
+    const a = [
+      [1, 2],
+      [0, 3],
+      [2, 1]
+    ];
+    const b = [
+      [2, 5, 1, 9],
+      [4, 3, 5, 4],
+    ];
+
+    printMatrix(a);
+    printMatrix(b);
+    printMatrix(matrixMul(a, b));
+  }
+
+  print();
+</script>
+
+</html>
